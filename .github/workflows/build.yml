@@ -54,10 +54,14 @@ jobs:
         run: npm run build
 
       - name: Construir el instalador
-        run: node node_modules/electron-builder/cli.js ${{ matrix.ebflag }}
+        run: node node_modules/electron-builder/cli.js ${{ matrix.ebflag }} --publish never
         env:
-          # Evita que electron-builder intente firmar en macOS (no hay certificado).
+          # Sin firma de codigo: no hay certificados en los runners (piloto).
+          # macOS: no buscar identidad automaticamente.
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          # Windows: no intentar firmar el .exe (evita fallos de signtool/rcedit).
+          WIN_CSC_LINK: ''
+          CSC_LINK: ''
 
       - name: Listar lo generado (diagnostico)
         if: always()

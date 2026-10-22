@@ -21,7 +21,8 @@ extraResources:
 win:
   target:
     - nsis
-    - msi
+  # Sin firma de codigo en el piloto (no hay certificado en el runner).
+  signAndEditExecutable: false
   artifactName: ${productName}-${version}-win-${arch}.${ext}
 
 nsis:
