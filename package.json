@@ -2,7 +2,10 @@
   "name": "fuller-ofertas",
   "version": "0.1.0",
   "description": "Convierte PDFs e imagenes de ofertas del catalogo Fuller en piezas digitales listas para compartir.",
-  "author": "Fuller",
+  "author": {
+    "name": "Fuller",
+    "email": "soporte@fuller.local"
+  },
   "license": "UNLICENSED",
   "private": true,
   "main": "dist-electron/main/index.js",

@@ -43,4 +43,5 @@ linux:
     - AppImage
     - deb
   category: Graphics
+  maintainer: Fuller <soporte@fuller.local>
   artifactName: ${productName}-${version}-linux-${arch}.${ext}
