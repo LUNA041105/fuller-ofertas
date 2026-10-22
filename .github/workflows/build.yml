@@ -56,12 +56,29 @@ jobs:
       - name: Construir el instalador
         run: node node_modules/electron-builder/cli.js ${{ matrix.ebflag }} --publish never
         env:
-          # Sin firma de codigo: no hay certificados en los runners (piloto).
-          # macOS: no buscar identidad automaticamente.
+          # No buscar certificados reales en el llavero: usamos firma ad-hoc en
+          # macOS (identity "-" en electron-builder.yml) y sin firma en Windows.
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
           # Windows: no intentar firmar el .exe (evita fallos de signtool/rcedit).
           WIN_CSC_LINK: ''
           CSC_LINK: ''
+
+      - name: Verificar la firma de la app (solo macOS)
+        if: matrix.platform == 'mac'
+        shell: bash
+        run: |
+          APP="release/mac/Fuller Ofertas.app"
+          if [ ! -d "$APP" ]; then
+            APP="release/mac-arm64/Fuller Ofertas.app"
+          fi
+          echo "=== App: $APP ==="
+          echo "--- codesign --verify --deep --strict ---"
+          codesign --verify --deep --strict --verbose=2 "$APP" || true
+          echo "--- codesign -dvvv (resumen de firma) ---"
+          codesign -dvvv "$APP" 2>&1 | head -n 20 || true
+          echo "--- firma del sidecar ---"
+          SIDECAR="$APP/Contents/Resources/sidecar/fuller-sidecar"
+          codesign --verify --strict --verbose=2 "$SIDECAR" || true
 
       - name: Listar lo generado (diagnostico)
         if: always()
