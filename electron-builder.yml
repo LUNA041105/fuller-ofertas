@@ -1,0 +1,45 @@
+appId: com.fuller.ofertas
+productName: Fuller Ofertas
+copyright: Fuller
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist
+  - dist-electron
+
+# El sidecar de Python (compilado con PyInstaller) se incluye como recurso extra
+# para que el usuario no necesite tener Python instalado.
+extraResources:
+  - from: resources/sidecar
+    to: sidecar
+    filter:
+      - "**/*"
+
+win:
+  target:
+    - nsis
+    - msi
+  artifactName: ${productName}-${version}-win-${arch}.${ext}
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+
+mac:
+  target:
+    - dmg
+  category: public.app-category.productivity
+  # Sin firma por ahora: macOS mostrara una advertencia al instalar (aceptado para el piloto).
+  identity: null
+  artifactName: ${productName}-${version}-mac-${arch}.${ext}
+
+linux:
+  target:
+    - AppImage
+    - deb
+  category: Graphics
+  artifactName: ${productName}-${version}-linux-${arch}.${ext}

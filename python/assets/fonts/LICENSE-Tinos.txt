@@ -1,0 +1,9 @@
+Fuente: Tinos (serif.ttf)
+Autor: Steve Matteson
+Licencia: Apache License 2.0
+Origen: https://github.com/google/fonts/tree/main/ofl/tinos
+
+Tinos es metricamente compatible con Times New Roman y se distribuye bajo la
+licencia Apache 2.0, que permite su uso y redistribucion en esta aplicacion.
+El texto completo de la licencia esta disponible en:
+https://www.apache.org/licenses/LICENSE-2.0

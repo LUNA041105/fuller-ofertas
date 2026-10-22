@@ -1,0 +1,32 @@
+# Dependencias
+node_modules/
+python/.venv/
+python/build/
+python/__pycache__/
+__pycache__/
+*.pyc
+
+# Builds / artefactos
+dist/
+dist-electron/
+release/
+resources/sidecar/
+
+# Secretos y config local
+.env
+.env.local
+
+# Datos de usuario generados en desarrollo
+userdata/
+
+# Instalacion previa de Windows (no debe versionarse)
+Fuller Ofertas/
+
+# Paquetes y temporales
+*.zip
+gitver.txt
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,74 @@
+name: Construir instaladores (Win / macOS / Linux)
+
+# Se ejecuta manualmente desde la pestana "Actions" de GitHub, o al hacer push
+# de una etiqueta que empiece con "v" (por ejemplo v0.1.0).
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            platform: mac
+            ebflag: --mac
+          - os: windows-latest
+            platform: win
+            ebflag: --win
+          - os: ubuntu-latest
+            platform: linux
+            ebflag: --linux
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias de Node
+        run: npm install
+
+      - name: Instalar dependencias de Python
+        run: python -m pip install --upgrade pip && pip install -r python/requirements.txt pyinstaller
+
+      - name: Compilar el sidecar (binario de la plataforma)
+        working-directory: python
+        run: pyinstaller sidecar.spec --distpath ../resources/sidecar --workpath build --noconfirm
+
+      - name: Compilar la interfaz (Vite)
+        run: npm run build
+
+      - name: Construir el instalador
+        run: node node_modules/electron-builder/cli.js ${{ matrix.ebflag }}
+        env:
+          # Evita que electron-builder intente firmar en macOS (no hay certificado).
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - name: Subir instaladores como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuller-ofertas-${{ matrix.platform }}
+          # Sube los instaladores generados (dmg, exe, msi, AppImage, deb) sin
+          # incluir las carpetas intermedias de empaquetado.
+          path: |
+            release/*.dmg
+            release/*.exe
+            release/*.msi
+            release/*.AppImage
+            release/*.deb
+          if-no-files-found: warn

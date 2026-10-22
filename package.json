@@ -1,0 +1,39 @@
+{
+  "name": "fuller-ofertas",
+  "version": "0.1.0",
+  "description": "Convierte PDFs e imagenes de ofertas del catalogo Fuller en piezas digitales listas para compartir.",
+  "author": "Fuller",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "dist-electron/main/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "python:setup": "python -m venv python/.venv && python/.venv/Scripts/pip install -r python/requirements.txt",
+    "python:build": "pyinstaller --onefile --name fuller-sidecar --distpath resources/sidecar python/sidecar.py",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
+    "@types/node": "^22.7.4",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "electron": "^32.1.2",
+    "electron-builder": "^25.0.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-electron": "^0.28.8",
+    "vite-plugin-electron-renderer": "^0.14.6"
+  }
+}

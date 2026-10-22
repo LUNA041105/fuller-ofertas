@@ -1,0 +1,6 @@
+# Dependencias del sidecar. Wheels precompilados para Python 3.14.
+# PDFium (pypdfium2) se usa en lugar de PyMuPDF por su empaquetado confiable
+# con PyInstaller (PyMuPDF causaba access violation en el binario congelado).
+pypdfium2>=5.0.0
+Pillow>=13.0.0
+numpy>=2.5.0
