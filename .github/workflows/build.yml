@@ -48,7 +48,7 @@ jobs:
 
       - name: Compilar el sidecar (binario de la plataforma)
         working-directory: python
-        run: pyinstaller sidecar.spec --distpath ../resources/sidecar --workpath build --noconfirm
+        run: python -m PyInstaller sidecar.spec --distpath ../resources/sidecar --workpath build --noconfirm
 
       - name: Compilar la interfaz (Vite)
         run: npm run build
@@ -58,6 +58,15 @@ jobs:
         env:
           # Evita que electron-builder intente firmar en macOS (no hay certificado).
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+      - name: Listar lo generado (diagnostico)
+        if: always()
+        shell: bash
+        run: |
+          echo "=== resources/sidecar ==="
+          ls -la resources/sidecar || true
+          echo "=== release ==="
+          ls -la release || true
 
       - name: Subir instaladores como artefacto
         uses: actions/upload-artifact@v4
