@@ -37,11 +37,11 @@ mac:
   target:
     - dmg
   category: public.app-category.productivity
-  # Firma ad-hoc (identity "-"): no requiere certificado de Apple, pero deja la
-  # app y su sidecar firmados de forma COHERENTE. Esto evita el error
-  # "la aplicacion esta danada" que causa una firma inconsistente entre el
-  # ejecutable de Electron y el binario de PyInstaller.
-  identity: '-'
+  # IMPORTANTE: dejamos que electron-builder NO firme (identity null). La firma
+  # ad-hoc COMPLETA (app + sidecar de Python) la hace nuestro hook afterPack.js,
+  # para evitar la doble firma que hacia fallar a electron-builder
+  # ("CSC_KEY_PASSWORD not defined" / "not a file").
+  identity: null
   hardenedRuntime: true
   gatekeeperAssess: false
   entitlements: build/entitlements.mac.plist
